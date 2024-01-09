@@ -60,12 +60,22 @@ def encrypt_image_v2(image:Image.Image, psw):
     shuffle_arr(y_arr,get_sha256(psw))
     pixel_array = np.array(image)
 
-    for y in range(height):
-        _y = y_arr[y]
-        temp = pixel_array[y].copy()
-        pixel_array[y] = pixel_array[_y]
-        pixel_array[_y] = temp
-    pixel_array = np.transpose(pixel_array, axes=(1, 0, 2))
+    try:
+        for y in range(height):
+            _y = y_arr[y]
+            temp = pixel_array[y].copy()
+            pixel_array[y] = pixel_array[_y]
+            pixel_array[_y] = temp
+        pixel_array = np.transpose(pixel_array, axes=(1, 0, 2))
+    except Exception as e:
+        pixel_array = np.array(image.convert("RGB"))
+        for y in range(height):
+            _y = y_arr[y]
+            temp = pixel_array[y].copy()
+            pixel_array[y] = pixel_array[_y]
+            pixel_array[_y] = temp
+        pixel_array = np.transpose(pixel_array, axes=(1, 0, 2))
+    # end try
     for x in range(width):
         _x = x_arr[x]
         temp = pixel_array[x].copy()
