@@ -95,7 +95,12 @@ def dencrypt_image_v2(image:Image.Image, psw):
     shuffle_arr(y_arr,get_sha256(psw))
     pixel_array = np.array(image)
 
-    pixel_array = np.transpose(pixel_array, axes=(1, 0, 2))
+    try:
+        pixel_array = np.transpose(pixel_array, axes=(1, 0, 2))
+    except Exception as e:
+        pixel_array = np.array(image.convert("RGB"))
+        pixel_array = np.transpose(pixel_array, axes=(1, 0, 2))
+    # end try
     for x in range(width-1,-1,-1):
         _x = x_arr[x]
         temp = pixel_array[x].copy()
